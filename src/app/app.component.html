@@ -1,0 +1,35 @@
+<div class="app">
+  <!-- You may use this form for your search box -->
+  <form [formGroup]="searchForm" (ngSubmit)="search()">
+    <input formControlName="term" type="search">
+    <button type="submit" [disabled]="searching || paging">
+      {{ searching ? 'Searching...' : 'Search' }}
+    </button>
+  </form>
+
+  <!-- You may use this container for your listing -->
+  <ng-container *ngIf="!searching && term">
+    <p>
+      Your search for <strong>{{ term }}</strong> returned {{ total }}
+      result{{ total === 1 ? '' : 's' }}.
+    </p>
+    <div class="pagination">
+      <button *ngIf="totalPages > 1"
+        class="previous-page"
+        [disabled]="paging || currentPage === 1"
+        (click)="previousPage()">
+        Previous Page
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button *ngIf="totalPages > 1"
+        class="next-page"
+        [disabled]="paging || currentPage === totalPages"
+        (click)="nextPage()">
+        Next Page
+      </button>
+    </div>
+    <book-listing *ngFor="let book of books"
+      [book]="book">
+    </book-listing>
+  </ng-container>
+</div>
